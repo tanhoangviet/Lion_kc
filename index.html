@@ -3,126 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lion Kc Lee</title>
+    <title>Bảo Trì</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #6a11cb, #2575fc);
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
             color: white;
-            text-align: center;
-            padding: 50px;
-        }
-        .container {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            background-color: #007bff; /* Blue color */
-            color: white;
-            transition: background 0.3s;
-            margin-top: 10px;
-        }
-        button:hover {
-            background-color: #0056b3; /* Darker blue color on hover */
-        }
-        .admin-controls {
-            display: none;
-        }
-        .thumbnail {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: #ddd;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            margin: 10px auto;
+            height: 100vh;
+            margin: 0;
         }
-        .thumbnail img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        #countdown {
+            font-size: 2em;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <h1>Script Management</h1>
     <div class="container">
-        <input type="text" id="searchBar" placeholder="Search scripts..." oninput="filterScripts()">
-        <div id="scriptsContainer"></div>
-        <button id="adminButton" onclick="toggleAdminMode()">Admin Mode</button>
-        <div id="adminControls" class="admin-controls">
-            <input type="password" id="adminToken" placeholder="Enter admin token">
-            <button onclick="checkToken()">Check Token</button>
-        </div>
-        <div id="adminActions" class="admin-controls">
-            <button onclick="window.location.href='submit.html'">Submit Script</button>
-            <button onclick="resetScripts()">Delete All Scripts</button>
-        </div>
+        <h1>Bảo Trì</h1>
+        <p>Xin lỗi vì website cần sửa lỗi cần khắc phục.</p>
+        <p>Thời gian bảo trì: 10 ngày</p>
+        <p id="countdown"></p>
     </div>
 
     <script>
-        const correctToken = 'admin123'; // Change this to your desired admin token
+        function countdown() {
+            const endDate = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000);
+            const interval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = endDate - now;
 
-        function filterScripts() {
-            const filter = document.getElementById('searchBar').value.toLowerCase();
-            const scripts = JSON.parse(localStorage.getItem('scripts')) || [];
-            const scriptsContainer = document.getElementById('scriptsContainer');
-            scriptsContainer.innerHTML = '';
-            scripts.forEach((script, index) => {
-                if (script.name.toLowerCase().includes(filter)) {
-                    const scriptDiv = document.createElement('div');
-                    scriptDiv.classList.add('script');
-                    scriptDiv.innerHTML = `
-                        <div class="thumbnail">
-                            ${script.thumbnail ? `<img src="${script.thumbnail}" alt="Thumbnail">` : 'No Image'}
-                        </div>
-                        <p>${script.name}</p>
-                        <button onclick="window.location.href='script.html?index=${index}'">View</button>
-                    `;
-                    scriptsContainer.appendChild(scriptDiv);
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("countdown").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+                if (distance < 0) {
+                    clearInterval(interval);
+                    document.getElementById("countdown").innerHTML = "Maintenance completed!";
                 }
-            });
+            }, 1000);
         }
 
-        function toggleAdminMode() {
-            document.getElementById('adminControls').style.display = 'block';
-        }
-
-        function checkToken() {
-            const token = document.getElementById('adminToken').value;
-            if (token === correctToken) {
-                document.getElementById('adminActions').style.display = 'block';
-                document.getElementById('adminControls').style.display = 'none'; // Hide admin controls
-            } else {
-                alert('Incorrect token!');
-            }
-        }
-
-        function resetScripts() {
-            localStorage.removeItem('scripts');
-            filterScripts();
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            filterScripts();
-        });
+        countdown();
     </script>
 </body>
 </html>
