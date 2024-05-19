@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .thumbnail {
+            width: 200px;
+            height: 200px;
+            border-radius: 10px;
+            background: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #ff4d4d;
+            color: white;
+            transition: background 0.3s;
+        }
+        .back-button:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+    <h1> Script Details</h1>
+    <div class="container">
+        <div class="thumbnail" id="thumbnail"></div>
+        <h2 id="scriptName"></h2>
+        <p id="scriptContent"></p>
+        <button class="back-button" onclick="goBack()">Back</button>
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const index = params.get('index');
+            const scripts = JSON.parse(localStorage.getItem('scripts')) || [];
+            if (index >= 0 && index < scripts.length) {
+                const script = scripts[index];
+                document.getElementById('scriptName').innerText = script.name;
+                document.getElementById('scriptContent').innerText = script.content;
+                if (script.thumbnail) {
+                    const thumbnail = document.getElementById('thumbnail');
+                    const img = document.createElement('img');
+                    img.src = script.thumbnail;
+                    img.alt = 'Thumbnail';
+                    thumbnail.appendChild(img);
+                }
+            } else {
+                alert('Invalid script index!');
+                goBack();
+            }
+        });
+    </script>
+</body>
+</html>
