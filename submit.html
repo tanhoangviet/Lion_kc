@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Script</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Submit Script</h1>
+    <div class="container">
+        <input type="text" id="scriptName" placeholder="Script Name">
+        <textarea id="scriptContent" rows="10" placeholder="Script Content"></textarea>
+        <input type="text" id="scriptThumbnail" placeholder="Thumbnail URL (optional)">
+        <button onclick="submitScript()">Submit</button>
+    </div>
+
+    <script>
+        function submitScript() {
+            const name = document.getElementById('scriptName').value;
+            const content = document.getElementById('scriptContent').value;
+            const thumbnail = document.getElementById('scriptThumbnail').value;
+
+            if (name && content) {
+                const scripts = JSON.parse(localStorage.getItem('scripts')) || [];
+                scripts.push({ name, content, thumbnail });
+                localStorage.setItem('scripts', JSON.stringify(scripts));
+                window.location.href = 'index.html';
+            } else {
+                alert('Please fill out both the script name and content.');
+            }
+        }
+    </script>
+</body>
+</html>
