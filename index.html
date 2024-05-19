@@ -27,20 +27,19 @@
             border-radius: 5px;
         }
         button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #007bff; /* Blue color */
-    color: white;
-    transition: background 0.3s;
-    margin-top: 10px;
-}
-
-button:hover {
-    background-color: #0056b3; /* Darker blue color on hover */
-}
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff; /* Blue color */
+            color: white;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3; /* Darker blue color on hover */
+        }
         .admin-controls {
             display: none;
         }
@@ -67,15 +66,6 @@ button:hover {
     <div class="container">
         <input type="text" id="searchBar" placeholder="Search scripts..." oninput="filterScripts()">
         <div id="scriptsContainer"></div>
-        <button id="adminButton" onclick="toggleAdminMode()">Admin Mode</button>
-        <div id="adminControls" class="admin-controls">
-            <input type="password" id="adminToken" placeholder="Enter admin token">
-            <button onclick="checkToken()">Check Token</button>
-        </div>
-        <div id="adminActions" class="admin-controls">
-            <button onclick="window.location.href='submit.html'">Submit Script</button>
-            <button onclick="resetScripts()">Delete All Scripts</button>
-        </div>
     </div>
 
     <script>
