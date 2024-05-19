@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff; /* Blue color */
+    color: white;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue color on hover */
+}
+        .admin-controls {
+            display: none;
+        }
+        .thumbnail {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            margin: 10px auto;
+        }
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <h1>Script Management</h1>
+    <div class="container">
+        <input type="text" id="searchBar" placeholder="Search scripts..." oninput="filterScripts()">
+        <div id="scriptsContainer"></div>
+        <button id="adminButton" onclick="toggleAdminMode()">Admin Mode</button>
+        <div id="adminControls" class="admin-controls">
+            <input type="password" id="adminToken" placeholder="Enter admin token">
+            <button onclick="checkToken()">Check Token</button>
+        </div>
+        <div id="adminActions" class="admin-controls">
+            <button onclick="window.location.href='submit.html'">Submit Script</button>
+            <button onclick="resetScripts()">Delete All Scripts</button>
+        </div>
+    </div>
+
+    <script>
+        const correctToken = 'admin123'; // Change this to your desired admin token
+
+        function filterScripts() {
+            const filter = document.getElementById('searchBar').value.toLowerCase();
+            const scripts = JSON.parse(localStorage.getItem('scripts')) || [];
+            const scriptsContainer = document.getElementById('scriptsContainer');
+            scriptsContainer.innerHTML = '';
+            scripts.forEach((script, index) => {
+                if (script.name.toLowerCase().includes(filter)) {
+                    const scriptDiv = document.createElement('div');
+                    scriptDiv.classList.add('script');
+                    scriptDiv.innerHTML = `
+                        <div class="thumbnail">
+                            ${script.thumbnail ? `<img src="${script.thumbnail}" alt="Thumbnail">` : 'No Image'}
+                        </div>
+                        <p>${script.name}</p>
+                        <button onclick="window.location.href='script.html?index=${index}'">View</button>
+                    `;
+                    scriptsContainer.appendChild(scriptDiv);
+                }
+            });
+        }
+
+        function toggleAdminMode() {
+            document.getElementById('adminControls').style.display = 'block';
+        }
+
+        function checkToken() {
+            const token = document.getElementById('adminToken').value;
+            if (token === correctToken) {
+                document.getElementById('adminActions').style.display = 'block';
+                document.getElementById('adminControls').style.display = 'none'; // Hide admin controls
+            } else {
+                alert('Incorrect token!');
+            }
+        }
+
+        function resetScripts() {
+            localStorage.removeItem('scripts');
+            filterScripts();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            filterScripts();
+        });
+    </script>
+</body>
+</html>
